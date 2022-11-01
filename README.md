@@ -16,18 +16,25 @@ help in further understanding the host-parasite immune interaction.
 
 -   *Population haplotype analysis* haplotype clustering and frequencies
     of their circulation in the population
+
 -   *Temporal haplotype density*  
     Followed through infection episodes at population level to see how
     haplotypes change with time
+
+-   *Temporal haplotype density*  
+    Following individuals through infection episodes and at population
+    level to see how haplotypes change with time and detect the
+    prevalent haplotype with time)
+
 -   *Phylogenetic population clustering* How many clusters, Discuss the
     cluster. Which cluster is common
 
-<hr>
+    <hr>
 
 ### Reports
 
-## [Haplotype frequencies](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_freq)
+### [Haplotype frequencies](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_freq)
 
-## [Haplotypes tree and correlations](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_tree_cor)
+### [Haplotypes tree and correlations](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_tree_cor)
 
-## [Haplotype distribution across episodes](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/hap_distribution)
+### [Haplotype distribution across episodes](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/hap_distribution)
