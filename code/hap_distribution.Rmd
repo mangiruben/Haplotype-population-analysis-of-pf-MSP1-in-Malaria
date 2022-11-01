@@ -1,0 +1,39 @@
+---
+title: "Haplotype distribution"
+author: "Reuben M. Yaa"
+date: "01/11/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+root.dir <- here::here()
+knitr::opts_chunk$set(echo = TRUE, root.dir=root.dir)
+knitr::opts_knit$set(root.dir = root.dir)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+## Introduction
+Mapped back the haplotypes to the children and respective infection episodes. The pattern of the top 4 haplotypes i.e E-KSNG-L, Q-KSNG-F, Q-KSNG-L and Q-KNNG-L was followed
+
+## Haplotype distribution
+
+```{r results = FALSE}
+library("tidyverse")
+
+hap_den<- readxl::read_xlsx("data/Haplotype Distribution.xlsx", col_names = TRUE)
+hap_den<-rbind(hap_den)
+
+den<-ggplot(hap_den, aes(y= Frequency, x=Episodes)) +
+  stat_smooth(aes(group= Haplotype, color= Haplotype, fill=Haplotype), method="loess", size=1.5, formula="y ~ log(x)", se=FALSE) +
+  labs(x="Infection episodes", y = "Frequency")+ #facet_grid(Haplotype ~ .)+
+  theme_classic(base_size = 10) +
+  theme(aspect.ratio=1/2.5)+theme(text = element_text(size = 20))
+den
+pdf("figures/haplotype_distribution.pdf", width = 11, height = 6, pointsize=30)#save as pdf file
+den
+dev.off()
+```
+
+Figure available [haplotype distribution](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/blob/main/figures/haplotype_distribution.pdf)
+<hr>
