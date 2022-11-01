@@ -1,6 +1,6 @@
-Haploype populatio analysis of *pf*MSP1 in Malaria
+Population analysis of *pf*MSP1 in Malaria
 ================
-Reuben
+Reuben Yaa
 21/08/2022
 
 ## Background
@@ -15,7 +15,7 @@ help in further understanding the host-parasite immune interaction.
 ## Analysis
 
 -   *Population haplotype analysis*
--   *Temporal Haplotype density*  
+-   *Temporal haplotype density*  
     Following individuals through infection episodes and at population
     level to see how haplotypes change with time and detect the
     prevalent haplotype with time)
@@ -26,4 +26,10 @@ help in further understanding the host-parasite immune interaction.
 
 <hr>
 
-## Reports
+### Reports
+
+## [Haplotype frequencies](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_freq)
+
+## [Haplotypes tree and correlations](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_tree_cor)
+
+## [Haplotype distribution across episodes](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/hap_distribution)
