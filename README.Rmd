@@ -23,9 +23,9 @@ Followed through infection episodes at population level to see how haplotypes ch
 <hr>
   
 ### Reports
+  https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_freq
   
-  
-### [Haplotype frequencies](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_freq)
-### [Haplotypes tree and correlations](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_tree_cor)
-### [Haplotype distribution across episodes](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/hap_distribution)
+### [Haplotype frequencies](https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_freq)
+### [Haplotypes tree and correlations](https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_tree_cor)
+### [Haplotype distribution across episodes](https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/hap_distribution)
 
