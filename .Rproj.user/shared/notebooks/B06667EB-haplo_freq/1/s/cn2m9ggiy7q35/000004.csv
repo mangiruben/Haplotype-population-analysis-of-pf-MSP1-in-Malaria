@@ -1,2 +1,0 @@
-"0","haplo_freq<-getcut.fun(sort(ret$haplo$hap.prob, decreasing =TRUE), "
-"0","                     nn = my.snp$nseq, plot = 1)"

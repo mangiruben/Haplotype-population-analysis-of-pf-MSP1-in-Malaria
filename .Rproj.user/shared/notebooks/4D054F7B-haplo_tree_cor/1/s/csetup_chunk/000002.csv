@@ -1,3 +1,0 @@
-"0","root.dir <- here::here()"
-"0","knitr::opts_chunk$set(echo = TRUE, root.dir=root.dir)"
-"0","knitr::opts_knit$set(root.dir = root.dir)"
