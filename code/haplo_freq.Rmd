@@ -43,7 +43,7 @@ dev.off()
 
 #### --Haplotype DNA sequences
 
-Haplotypes sequences  translated to amino -acid sequence in MEGA, and haplotypes renamed and new data file *haplotype_amino.fas* saved for further analysis
+Haplotypes sequences  translated to amino -acid sequence in MEGA, and haplotypes renamed and new data file *haplotype_amino.fas* saved for next analysis
 
 ```{r}
 write.fasta(ret$haplo$haplotype, "data/haplotypes.fas")
