@@ -31,22 +31,23 @@ ret <- haplo.post.prob(my.snp$org, ploidy = 1)
 
 #### --Haplotype frequencies
 ```{r results=FALSE}
-haplo_freq<-getcut.fun(sort(ret$haplo$hap.prob, decreasing =TRUE), 
+getcut.fun(sort(ret$haplo$hap.prob, decreasing =TRUE), 
                      nn = my.snp$nseq, plot = 1)
 pdf("figures/haplotype_frequency.pdf", width = 13, height = 9, pointsize=18)#save as pdf file
-haplo_freq
 # The getcut.fun truncates the  significant haplotypes and the plots a graph 
+getcut.fun(sort(ret$haplo$hap.prob, decreasing =TRUE), 
+                     nn = my.snp$nseq, plot = 1)
 dev.off()
 
 ```
 #### --Haplotype DNA sequences
 
-Haplotypes sequences  translated to amino -acid sequence in MEGA, and haplotypes renamed and new data file *haplotype_amino.fas* saved for next analysis
+Haplotypes sequences  translated to amino -acid sequence in MEGA11, and haplotypes renamed and new data file *haplotype_amino.fas* saved for next analysis
 
 ```{r}
 write.fasta(ret$haplo$haplotype, "data/haplotypes.fas")
 
 ```
 
-Figure available [haplotypes](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/blob/main/figures/haplotype_frequency.pdf)
+Figure available [haplotypes](https://mangiruben.github.io/pfMSP1-Malaria/figures/haplotype_frequency.pdf)
 <hr>

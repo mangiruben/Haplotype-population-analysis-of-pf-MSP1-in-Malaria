@@ -14,29 +14,27 @@ help in further understanding the host-parasite immune interaction.
 
 ## Analysis
 
--   *Population haplotype analysis* haplotype clustering and frequencies
-    of their circulation in the population
+-   *Population haplotype analysis* Sequences are grouped to Haplotypes
+    based on cladistic relationship and frequencies of the haplotypes
+    determined using phyclust package (*Tzeng 2005*)
 
--   *Temporal haplotype density*  
+-   *Temporal haplotype trend*  
     Followed through infection episodes at population level to see how
-    haplotypes change with time
+    four frequent haplotypes change with time
 
--   *Temporal haplotype density*  
-    Following individuals through infection episodes and at population
-    level to see how haplotypes change with time and detect the
-    prevalent haplotype with time)
+-   *Linkage Disequilibrium* Analysis done using DnaSP
 
--   *Phylogenetic population clustering* How many clusters, Discuss the
-    cluster. Which cluster is common
+-   *Phylogenetic population clustering* Haplotypes were ploted using
+    phylogenetic tree by applying hamming pairwise distance matrix for
+    corresponding residues between two sequences of equal lengths. The
+    haplotypes are further clustred
 
     <hr>
 
-### Reports
+    ### Reports
 
-<https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_freq>
+##### [Haplotype frequencies](https://mangiruben.github.io/pfMSP1-Malaria/code/haplo_freq)
 
-### [Haplotype frequencies](https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_freq)
+##### [Haplotypes tree and correlations](https://mangiruben.github.io/pfMSP1-Malaria/code/haplo_tree_cor)
 
-### [Haplotypes tree and correlations](https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_tree_cor)
-
-### [Haplotype distribution across episodes](https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/hap_distribution)
+##### [Haplotype distribution across episodes](https://mangiruben.github.io/pfMSP1-Malaria/code/hap_distribution)

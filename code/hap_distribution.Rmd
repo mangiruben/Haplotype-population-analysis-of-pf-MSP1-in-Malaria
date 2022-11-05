@@ -24,8 +24,9 @@ hap_den<- readxl::read_xlsx("data/Haplotype Distribution.xlsx", col_names = TRUE
 hap_den<-rbind(hap_den)
 
 den<-ggplot(hap_den, aes(y= Frequency, x=Episodes)) +
-  stat_smooth(aes(group= Haplotype, color= Haplotype, fill=Haplotype), method="loess", size=1.5, formula="y ~ log(x)", se=FALSE) +
-  labs(x="Infection episodes", y = "Frequency")+ #facet_grid(Haplotype ~ .)+
+  stat_smooth(aes(group= Haplotype, color= Haplotype, fill=Haplotype), method="loess", size=1, formula="y ~ log(x)", se=FALSE) +
+  geom_point(aes(colour=Haplotype))+
+  labs(x="Infection episodes", y = "Frequency")+ facet_grid(Haplotype ~ .)+
   theme_classic(base_size = 10) +
   theme(aspect.ratio=1/2.5)+theme(text = element_text(size = 20))
 den
@@ -34,5 +35,5 @@ den
 dev.off()
 ```
 
-Figure available [haplotype distribution](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/blob/main/figures/haplotype_distribution.pdf)
+Figure available [haplotype distribution](https://mangiruben.github.io/pfMSP1-Malaria/figures/haplotype_distribution.pdf)
 <hr>

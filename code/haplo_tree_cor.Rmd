@@ -39,7 +39,6 @@ njmsaplot
 pdf("figures/haplotype_tree.pdf", width = 11, height = 9, paper = "a4", pointsize=15)#save as pdf file
 njmsaplot
 dev.off()
-
 ```
 
 #### Haplotype correlation heatmaps
@@ -80,7 +79,5 @@ heatmap<-heatmaply_cor(cor(comat), file= "figures/heatmap.pdf",  xlab= "haplotyp
 heatmap
 ```
 
-
-
-Figures are available [haplotypes_trees](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/blob/main/figures/haplotype_tree.pdf) and [Haplotype_correlations](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/blob/main/figures/heatmap.pdf)
+Figures are available [haplotypes_trees](https://mangiruben.github.io/pfMSP1-Malaria/figures/haplotype_tree.pdf) and [Haplotype_correlations](https://mangiruben.github.io/pfMSP1-Malaria/figures/heatmap.pdf)
 <hr>
