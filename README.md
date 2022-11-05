@@ -35,6 +35,6 @@ help in further understanding the host-parasite immune interaction.
 
 ### [Haplotype frequencies](https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_freq.html)
 
-### [Haplotypes tree and correlations](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_tree_cor)
+### [Haplotypes tree and correlations](https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/haplo_tree_cor)
 
-### [Haplotype distribution across episodes](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/hap_distribution)
+### [Haplotype distribution across episodes](https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/code/hap_distribution)
