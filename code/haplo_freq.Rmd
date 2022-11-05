@@ -24,9 +24,7 @@ The sequences of the haplotypes are extracted for further analysis
 library (phyclust)
 my.snp <- read.phylip("data/MSP-1_19.phy", code.type ="NUCLEOTIDE")
 ret <- haplo.post.prob(my.snp$org, ploidy = 1)
-
 #updated the haplo.post.prob() code using from  (get.medBB.skip.fun, edit = T)>, from github.com/snoweye/phyclust/issues/7 I raised
-
 ```
 
 #### --Haplotype frequencies

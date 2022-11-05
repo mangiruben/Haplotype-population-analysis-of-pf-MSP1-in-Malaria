@@ -183,7 +183,6 @@ knitr::opts_chunk$set(warning = FALSE)</code></pre>
 <pre class="r"><code>library (phyclust)
 my.snp &lt;- read.phylip(&quot;data/MSP-1_19.phy&quot;, code.type =&quot;NUCLEOTIDE&quot;)
 ret &lt;- haplo.post.prob(my.snp$org, ploidy = 1)
-
 #updated the haplo.post.prob() code using from  (get.medBB.skip.fun, edit = T)&gt;, from github.com/snoweye/phyclust/issues/7 I raised</code></pre>
 </div>
 <div id="haplotype-frequencies" class="section level4">

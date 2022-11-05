@@ -28,9 +28,9 @@ den<-ggplot(hap_den, aes(y= Frequency, x=Episodes)) +
   geom_point(aes(colour=Haplotype))+
   labs(x="Infection episodes", y = "Frequency")+ facet_grid(Haplotype ~ .)+
   theme_classic(base_size = 10) +
-  theme(aspect.ratio=1/2.5)+theme(text = element_text(size = 20))
+  theme(aspect.ratio=5/9)+theme(text = element_text(size = 20))
 den
-pdf("figures/haplotype_distribution.pdf", width = 11, height = 6, pointsize=30)#save as pdf file
+pdf("figures/haplotype_distribution.pdf", width = 15, height = 10, pointsize=30)#save as pdf file
 den
 dev.off()
 ```
