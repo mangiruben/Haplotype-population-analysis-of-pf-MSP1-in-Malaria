@@ -35,9 +35,7 @@ dnbin<-dist.dna(nbin, model = "K80")
 tree<-njs(dnbin)
 ggt<-ggtree(tree, cex = 0.8, aes(color=branch.length))+scale_color_continuous(high='lightskyblue1',low='coral4')+geom_tiplab(align=TRUE, size=5)+geom_treescale(y = -1, color = "coral4", fontsize = 7)
 njmsaplot<-msaplot(ggt, nbin, offset = 0.009, width=1, height = 0.5, color = c(rep("rosybrown", 1), rep("sienna1", 1), rep("lightgoldenrod1", 1), rep("lightskyblue1", 1)))
-
 njmsaplot
-
 pdf("figures/haplotype_tree.pdf", width = 11, height = 9, paper = "a4", pointsize=15)#save as pdf file
 njmsaplot
 dev.off()

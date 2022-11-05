@@ -30,7 +30,6 @@ ret <- haplo.post.prob(my.snp$org, ploidy = 1)
 ```
 
 #### --Haplotype frequencies
-
 ```{r results=FALSE}
 haplo_freq<-getcut.fun(sort(ret$haplo$hap.prob, decreasing =TRUE), 
                      nn = my.snp$nseq, plot = 1)
@@ -40,7 +39,6 @@ haplo_freq
 dev.off()
 
 ```
-
 #### --Haplotype DNA sequences
 
 Haplotypes sequences  translated to amino -acid sequence in MEGA, and haplotypes renamed and new data file *haplotype_amino.fas* saved for next analysis
@@ -49,7 +47,6 @@ Haplotypes sequences  translated to amino -acid sequence in MEGA, and haplotypes
 write.fasta(ret$haplo$haplotype, "data/haplotypes.fas")
 
 ```
-
 
 Figure available [haplotypes](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/blob/main/figures/haplotype_frequency.pdf)
 <hr>
