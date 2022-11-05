@@ -16,7 +16,7 @@ knitr::opts_chunk$set(warning = FALSE)
 
 ### Introduction
 
-The *data/haplotype_amino.fas* from haplotype analysis is used for generating haplotype tree and assessing correlation between haplotypes. 
+The *data/haplotype_amino.fas* from haplotype analysis is used for generating phylogeneitic tree of the haplotypes and assessing correlation between haplotypes. Trees were calculated using hamming distance method which calculates pairwise distance matrix for corresponding residues between sequences of equal lengths. Corelation between haplotypes is assessed using heatmaply
 
 #### Ploting of alignement haplotypes trees
 ```{r results = FALSE}
@@ -41,7 +41,6 @@ njmsaplot
 pdf("figures/haplotype_tree.pdf", width = 11, height = 9, paper = "a4", pointsize=15)#save as pdf file
 njmsaplot
 dev.off()
-
 ```
 
 #### Haplotype correlation heatmaps
@@ -84,5 +83,5 @@ heatmap
 
 
 
-Figures are available [haplotypes_trees](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/blob/main/figures/haplotype_tree.pdf) and [Haplotype_correlations](https://github.com/mangiruben/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/blob/main/figures/heatmap.pdf)
+Figures are available [haplotypes_trees](https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/figures/haplotype_tree.pdf) and [Haplotype_correlations](https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/figures/figures/heatmap.pdf)
 <hr>
