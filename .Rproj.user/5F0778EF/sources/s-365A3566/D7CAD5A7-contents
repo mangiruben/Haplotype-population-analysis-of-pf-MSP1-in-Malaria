@@ -1,0 +1,55 @@
+---
+title: "Haplotype frequencies"
+author: "Reuben M. Yaa"
+date: "01/11/2022"
+output: html_document
+---
+
+```{r setup, include=TRUE}
+root.dir <- here::here()
+knitr::opts_chunk$set(echo = TRUE, root.dir=root.dir)
+knitr::opts_knit$set(root.dir = root.dir)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+### Introduction
+
+Fetching sequences from alignments stored in PHYLIP format and storing them as list of objects. Using evolutionary cladistic relationship in phyclust R package (*Tzeng 2005*), the sequences are grouped into haplotypes.The frequencies of each haplotype in the total population is determined and presented as a plot with truncation of most significant haplotypes to be retained based on the sample size.
+
+The sequences of the haplotypes are extracted for further analysis
+
+#### --Exctraction of haplotypes
+```{r results='hide'}
+library (phyclust)
+my.snp <- read.phylip("data/MSP-1_19.phy", code.type ="NUCLEOTIDE")
+ret <- haplo.post.prob(my.snp$org, ploidy = 1)
+
+#updated the haplo.post.prob() code using from  (get.medBB.skip.fun, edit = T)>, from github.com/snoweye/phyclust/issues/7 I raised
+```
+
+#### --Haplotype frequencies
+
+```{r results=FALSE}
+getcut.fun(sort(ret$haplo$hap.prob, decreasing =TRUE), 
+                     nn = my.snp$nseq, plot = 1)
+pdf("figures/haplotype_frequency.pdf", width = 13, height = 9, pointsize=18)#save as pdf file
+getcut.fun(sort(ret$haplo$hap.prob, decreasing =TRUE), 
+                     nn = my.snp$nseq, plot = 1)
+# The getcut.fun truncates the evolutionary significant haplotypes and the plots a graph
+dev.off()
+
+```
+
+#### --Haplotype DNA sequences
+
+Haplotypes sequences  translated to amino -acid sequence in MEGA11, and haplotypes renamed using amino-acid sequence at polymorophic sites and new data file *haplotype_amino.fas* saved for further analysis
+
+```{r}
+write.fasta(ret$haplo$haplotype, "data/haplotypes.fas")
+
+```
+
+
+Figure available [haplotypes](https://mangiruben.github.io/Haplotype-population-analysis-of-pf-MSP1-in-Malaria/figures/haplotype_frequency.pdf)
+<hr>

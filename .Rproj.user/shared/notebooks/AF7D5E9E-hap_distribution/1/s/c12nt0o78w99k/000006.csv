@@ -1,0 +1,5 @@
+"0","library(""tidyverse"")"
+"0","library(""heatmaply"")"
+"0","hap_den<- readxl::read_xlsx(""data/Haplotype Distribution.xlsx"", col_names = TRUE)"
+"2","Error: `path` does not exist: ‘data/Haplotype Distribution.xlsx’
+"

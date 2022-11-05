@@ -1,0 +1,7 @@
+"0","library (phyclust)"
+"2","Loading required package: ape
+"
+"0","my.snp <- read.phylip(""data/MSP-1_19.phy"", code.type =""NUCLEOTIDE"")"
+"0","ret <- haplo.post.prob(my.snp$org, ploidy = 1)"
+"0",""
+"0","#updated the haplo.post.prob() code using from  (get.medBB.skip.fun, edit = T)>, from github.com/snoweye/phyclust/issues/7 I raised"

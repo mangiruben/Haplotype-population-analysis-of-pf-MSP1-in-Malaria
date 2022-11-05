@@ -1,0 +1,173 @@
+"0","library(adegenet)"
+"2","Loading required package: ade4
+"
+"2","
+   /// adegenet 2.1.8 is loaded ////////////
+
+   > overview: '?adegenet'
+   > tutorials/doc/questions: 'adegenetWeb()' 
+   > bug reports/feature requests: adegenetIssues()
+
+
+"
+"0","library(ips)"
+"2","Loading required package: ape
+"
+"0","library(ggplot2)"
+"0","library(ggtree)"
+"2","Registered S3 method overwritten by 'ggtree':
+  method      from 
+  identify.gg ggfun
+"
+"2","ggtree v3.2.1  For help: https://yulab-smu.top/treedata-book/
+
+If you use ggtree in published research, please cite the most appropriate paper(s):
+
+1. Guangchuang Yu. Using ggtree to visualize data on tree-like structures. Current Protocols in Bioinformatics. 2020, 69:e96. doi:10.1002/cpbi.96
+2. Guangchuang Yu, Tommy Tsan-Yuk Lam, Huachen Zhu, Yi Guan. Two methods for mapping and visualizing associated data on phylogeny using ggtree. Molecular Biology and Evolution. 2018, 35(12):3041-3043. doi:10.1093/molbev/msy194
+3. Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution. 2017, 8(1):28-36. doi:10.1111/2041-210X.12628
+
+
+"
+"2","
+Attaching package: ‘ggtree’
+
+"
+"2","The following object is masked from ‘package:ape’:
+
+    rotate
+
+"
+"0","library(heatmaply)"
+"2","Loading required package: plotly
+"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"
+"2","Registered S3 method overwritten by 'htmlwidgets':
+  method           from         
+  print.htmlwidget tools:rstudio
+"
+"2","
+Attaching package: ‘plotly’
+
+"
+"2","The following object is masked from ‘package:ggplot2’:
+
+    last_plot
+
+"
+"2","The following object is masked from ‘package:stats’:
+
+    filter
+
+"
+"2","The following object is masked from ‘package:graphics’:
+
+    layout
+
+"
+"2","Loading required package: viridis
+"
+"2","Loading required package: viridisLite
+"
+"2","Registered S3 method overwritten by 'dendextend':
+  method     from 
+  rev.hclust vegan
+"
+"2","Registered S3 method overwritten by 'seriation':
+  method         from 
+  reorder.hclust vegan
+"
+"2","
+======================
+Welcome to heatmaply version 1.4.0
+
+Type citation('heatmaply') for how to cite the package.
+Type ?heatmaply for the main documentation.
+
+The github page is: https://github.com/talgalili/heatmaply/
+Please submit your suggestions and bug-reports at: https://github.com/talgalili/heatmaply/issues
+You may ask questions at stackoverflow, use the r and heatmaply tags: 
+	 https://stackoverflow.com/questions/tagged/heatmaply
+======================
+
+"
+"0","nbin<-fasta2DNAbin(""data/haplotypes_AA_names.fas"")"
+"1","
+ Converting FASTA alignment into a DNAbin object... 
+
+"
+"1","
+ Finding the size of a single genome... 
+
+"
+"1","
+ genome size is:"
+"1"," "
+"1","234"
+"1"," "
+"1","nucleotides 
+"
+"1","
+("
+"1"," "
+"1","5"
+"1"," "
+"1"," lines per genome )
+"
+"1","
+ Importing sequences... 
+"
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","."
+"1","
+ Forming final object... 
+"
+"1","
+...done.
+
+"
+"0","an<-as.alignment(nbin)"
+"0","nm<-as.matrix(an) "
+"0","nbinmat<-as.matrix(labels(nbin))"
+"0","class(nbin)"
+"1","[1]"
+"1"," ""DNAbin"""
+"1","
+"
+"0","dnbin<-dist.dna(nbin, model = ""K80"")"
+"0","tree<-njs(dnbin)"
+"0","ggt<-ggtree(tree, cex = 0.8, aes(color=branch.length))+scale_color_continuous(high='lightskyblue1',low='coral4')+geom_tiplab(align=TRUE, size=5)+geom_treescale(y = -1, color = ""coral4"", fontsize = 7)"
+"0","njmsaplot<-msaplot(ggt, nbin, offset = 0.009, width=1, height = 0.5, color = c(rep(""rosybrown"", 1), rep(""sienna1"", 1), rep(""lightgoldenrod1"", 1), rep(""lightskyblue1"", 1)))"
+"0",""
+"0","njmsaplot"

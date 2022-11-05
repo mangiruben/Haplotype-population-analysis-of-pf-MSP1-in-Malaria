@@ -1,0 +1,2 @@
+"0",""
+"0","pdf(""figures/haplotype_tree.pdf"", width = 11, height = 9, paper = ""a4"", pointsize=15)#save as pdf file"
