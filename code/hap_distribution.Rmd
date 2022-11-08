@@ -14,7 +14,7 @@ knitr::opts_chunk$set(warning = FALSE)
 ```
 
 ## Introduction
-Mapped back the haplotypes to the children and respective infection episodes. The pattern of the top 4 haplotypes i.e E-KSNG-L, Q-KSNG-F, Q-KSNG-L and Q-KNNG-L was followed
+Mapped back the haplotypes to the patients and their respective infection episodes. The pattern of the top 4 haplotypes i.e E-KSNG-L, Q-KSNG-F, Q-KSNG-L and Q-KNNG-L was followed
 
 ## Haplotype distribution
 ```{r results = FALSE}
