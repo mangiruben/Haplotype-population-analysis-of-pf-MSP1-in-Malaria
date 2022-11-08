@@ -38,3 +38,5 @@ help in further understanding the host-parasite immune interaction.
 ##### [Haplotypes tree and correlations](https://mangiruben.github.io/pfMSP1-Malaria/code/haplo_tree_cor)
 
 ##### [Haplotype distribution across episodes](https://mangiruben.github.io/pfMSP1-Malaria/code/hap_distribution)
+
+##### [Haplotype per patient](https://mangiruben.github.io/pfMSP1-Malaria/code/haplotype-per-patient)
