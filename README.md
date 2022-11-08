@@ -39,4 +39,4 @@ help in further understanding the host-parasite immune interaction.
 
 ##### [Haplotype distribution across episodes](https://mangiruben.github.io/pfMSP1-Malaria/code/hap_distribution)
 
-##### [Haplotype per patient](https://mangiruben.github.io/pfMSP1-Malaria/code/haplotype-per-patient)
+##### [Haplotype per patient](https://mangiruben.github.io/pfMSP1-Malaria/code/haplotype_per_patient)
