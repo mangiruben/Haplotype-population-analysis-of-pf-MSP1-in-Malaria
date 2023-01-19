@@ -19,7 +19,7 @@ Followed through infection episodes at population level to see how four frequent
 Analysis done using DnaSP
 
 - *Phylogenetic population clustering* 
-  Haplotypes were ploted using phylogenetic tree by applying hamming pairwise distance matrix for corresponding residues between two sequences of equal lengths. The haplotypes are further clustred 
+Haplotypes were ploted using phylogenetic tree by applying hamming pairwise distance matrix for corresponding residues between two sequences of equal lengths.
 <hr>
 ### Reports
 

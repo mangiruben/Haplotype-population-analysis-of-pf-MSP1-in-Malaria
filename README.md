@@ -14,24 +14,23 @@ help in further understanding the host-parasite immune interaction.
 
 ## Analysis
 
--   *Population haplotype analysis* Sequences are grouped to Haplotypes
-    based on cladistic relationship and frequencies of the haplotypes
-    determined using phyclust package (*Tzeng 2005*)
+- *Population haplotype analysis* Sequences are grouped to Haplotypes
+  based on cladistic relationship and frequencies of the haplotypes
+  determined using phyclust package (*Tzeng 2005*)
 
--   *Temporal haplotype trend*  
-    Followed through infection episodes at population level to see how
-    four frequent haplotypes change with time
+- *Temporal haplotype trend*  
+  Followed through infection episodes at population level to see how
+  four frequent haplotypes change with time
 
--   *Linkage Disequilibrium* Analysis done using DnaSP
+- *Linkage Disequilibrium* Analysis done using DnaSP
 
--   *Phylogenetic population clustering* Haplotypes were ploted using
-    phylogenetic tree by applying hamming pairwise distance matrix for
-    corresponding residues between two sequences of equal lengths. The
-    haplotypes are further clustred
+- *Phylogenetic population clustering* Haplotypes were ploted using
+  phylogenetic tree by applying hamming pairwise distance matrix for
+  corresponding residues between two sequences of equal lengths.
 
-    <hr>
+  <hr>
 
-    ### Reports
+  ### Reports
 
 ##### [Haplotype frequencies](https://mangiruben.github.io/pfMSP1-Malaria/code/haplo_freq)
 
