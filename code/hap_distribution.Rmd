@@ -14,7 +14,7 @@ knitr::opts_chunk$set(warning = FALSE)
 ```
 
 ## Introduction
-Assessed the distribution of the haplotypes through out the infection episodes and mapped back the haplotypes to the patients and their respective infection episodes occurring in highest distribution. The pattern of the top 4 haplotypes i.e E-KSNG-L, Q-KSNG-F, Q-KSNG-L and Q-KNNG-L was followed
+Assessed the distribution density of the haplotypes through out the infection episodes and mapped back the haplotypes to the patients and their respective infection episodes occurring in highest distribution. The pattern of the top 4 haplotypes i.e E-KSNG-L, Q-KSNG-F, Q-KSNG-L and Q-KNNG-L was followed
 
 ## Haplotype distribution
 ```{r results = FALSE}
