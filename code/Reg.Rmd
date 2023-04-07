@@ -1,0 +1,43 @@
+---
+title: "Regressions"
+author: "Reuben M. Yaa"
+date: "2023-04-03"
+output: html_document
+---
+
+```{r setup, include=TRUE}
+root.dir <- here::here()
+knitr::opts_chunk$set(echo = TRUE, root.dir=root.dir)
+knitr::opts_knit$set(root.dir = root.dir)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+### Assessing associations with sex 
+used non-parametric wilcoxon method to see which of the four main prevalent haplotypes are associated with sex
+```{r}
+library(plotly)
+library(dplyr)
+library(tidyverse)
+library(ggpubr)
+
+meta<- readxl::read_xlsx("data/freq.xlsx", col_names = TRUE)
+#model <- lm(E-KSNG-L~ Sex, data = meta) 
+#summary(model)
+ #Simple regressions checking Haplotype association with Sex, but is same With Wilcoxon pairwise comparison
+my_comparisons <- list(c("Female", "Male"))
+bxp <- ggboxplot(
+  meta, x = "Sex", y = c("E-KSNG-L", "Q-KSNG-L", "Q-KSNG-F", "Q-KNNG-L"),
+combine= TRUE,
+ylab = "Frequency",
+color = "Sex", palette="jco")+
+  coord_cartesian(ylim = c(0, 8))+
+  stat_compare_means(method="t.test", label = "p.signif", label.x.npc = "right", label.y = 7,  hide.ns = TRUE)
+#stat_compare_means(label = "p.signif", vjust=3)
+
+bxp
+pdf("figures/sex_associations.pdf", width = 7, height = 5, pointsize=30)#save as pdf file
+bxp
+dev.off()
+
+```
