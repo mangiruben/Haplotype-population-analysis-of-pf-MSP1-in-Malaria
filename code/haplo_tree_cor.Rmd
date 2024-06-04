@@ -1,7 +1,7 @@
 ---
-title: "Haplotype tree and heatmaps"
+title: "Microhaplotype tree and heatmaps"
 author: "Reuben M. Yaa"
-date: "01/11/2022"
+date: "<h4>Updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
 output: html_document
 ---
 
@@ -16,15 +16,17 @@ knitr::opts_chunk$set(warning = FALSE)
 
 ### Introduction
 
-The *data/haplotype_amino.fas* from haplotype analysis is used for generating haplotype tree and assessing correlation between haplotypes. 
+The *data/haplotype_amino.fas* from haplotype analysis is used for generating microhaplotype tree and assessing correlation between microhaplotypes. 
 
 #### Ploting of alignement haplotypes trees
 ```{r results = FALSE}
+library(ape)
 library(adegenet)
 library(ips)
 library(ggplot2)
 library(ggtree)
 library(heatmaply)
+library(plotly)
 
 nbin<-fasta2DNAbin("data/haplotypes_AA_names.fas")
 an<-as.alignment(nbin)
@@ -33,7 +35,11 @@ nbinmat<-as.matrix(labels(nbin))
 class(nbin)
 dnbin<-dist.dna(nbin, model = "K80")
 tree<-njs(dnbin)
-ggt<-ggtree(tree, cex = 0.8, aes(color=branch.length))+scale_color_continuous(high='lightskyblue1',low='coral4')+geom_tiplab(align=TRUE, size=5)+geom_treescale(y = -1, color = "coral4", fontsize = 7)
+ggt<-ggtree(tree, cex = 0.8, aes(color=branch.length))+
+  scale_color_continuous(high='lightskyblue1',low='coral4')+
+  geom_tiplab(align=TRUE, size=5)+
+  geom_treescale(y = -1, color = "coral4", fontsize = 7)
+
 njmsaplot<-msaplot(ggt, nbin, offset = 0.009, width=1, height = 0.5, color = c(rep("rosybrown", 1), rep("sienna1", 1), rep("lightgoldenrod1", 1), rep("lightskyblue1", 1)))
 njmsaplot
 pdf("figures/haplotype_tree.pdf", width = 11, height = 9, paper = "a4", pointsize=15)#save as pdf file
@@ -41,7 +47,7 @@ njmsaplot
 dev.off()
 ```
 
-#### Haplotype correlation heatmaps
+#### Microhaplotype correlation heatmaps
 
 ```{r}
 sat2 <- NULL
@@ -71,13 +77,309 @@ for (i in 1:length(sat3)) {
 #comat	is Hamming distance matrix
 colnames(comat)<-nbinmat
 
-heatmap<-heatmaply_cor(cor(comat), file= "figures/heatmap.pdf",  xlab= "haplotypes", ylab="haplotypes",
-              k_col=3,
-              k_row=3, margins =c(10,10,15), fontsize_row = 8,
-              fontsize_col = 8)
-
+#heatmap<-heatmaply_cor(cor(comat), file= "figures/heatmap.pdf",  xlab= "haplotypes", ylab="haplotypes",
+       #       k_col=3,
+        #      k_row=3, margins =c(10,10,15), fontsize_row = 8,
+        #      fontsize_col = 8)
+heatmap <-heatmaply_cor(cor(comat), file= "figures/heatmap.pdf",
+                        xlab= " ", ylab=" ", 
+                        margins =c(10,10,15), 
+                        fontsize_row = 16, fontsize_col = 16, column_text_angle = 90, 
+                        fontfamily="Georgia", col.dendrogram="black")
 heatmap
 ```
 
+```{r, fig.width=7, fig.height=4}
+library(treeio)
+library(pegas)
+tree <- dist.hamming(nm)
+class(tree)
+htre<-nj(tree)
+bp <- boot.phylo(htre, nm, B=100, function(x) nj(dist.hamming(x)))
+bp2 <- data.frame(node=1:Nnode(htre) + Ntip(htre), bootstrap = bp)
+htree <- full_join(htre, bp2, by="node")
+bootstrap<-ggtree(htree, size=1, branch.length='branch.length')+geom_tiplab(size=3)+
+geom_nodepoint(aes(fill=cut(bootstrap, c(0,50,70,85,100))), shape=21, size=3)+
+   xlim(0, 5)+
+theme_tree(legend.position=c(0.75, 0.2))+ 
+   
+scale_fill_manual(values=c("black", "pink1", "red", "blue"), guide='legend', name='Percentage of bootstrap (BP)',breaks=c('(85,100]', '(70,85]', '(50,70]', '(0,50]'), labels=expression(BP>=85, 70<=BP*"<85",50<=BP*"<70", BP<50)+
+                      theme(plot.background = element_rect(color = 1,
+                                       size = 400)))
+                  
+
+bootstrap 
+pdf("figures/bootstrap_hap_tree.pdf", width = 18, height = 7, pointsize = 29)#save as pdf file
+bootstrap 
+dev.off()
+
+```
+
+
 Figures are available [haplotypes_trees](https://mangiruben.github.io/pfMSP1-Malaria/figures/haplotype_tree.pdf) and [Haplotype_correlations](https://mangiruben.github.io/pfMSP1-Malaria/figures/heatmap.pdf)
+
+
+#### Getting Nucleotide and haplotype diversity per infection episodes
+```{r results = FALSE}
+met_data<- readxl::read_xlsx("data/Supplementary Table 1.xlsx", col_names = TRUE)
+data_meta<-data.frame(Patient_ID=met_data$Patient_ID,  Parasitemia= met_data$Parasitemia, Haplotype=met_data$Haplotype, Episode=met_data$Episode)
+data_meta2 <- data_meta[!is.na(data_meta$Haplotype), , drop = FALSE]
+head(data_meta2)
+nrow(data_meta2)#give all number of sequences, it should be 150
+#because we want to compare diversity vs parasitemia. We are rmoving rows that have no parasitemia data
+clean_data <- data_meta2[!is.na(data_meta2$Parasitemia), , drop = FALSE]
+nrow(clean_data)
+hap_seq<-read.csv("data/haplotypes_seq.txt", header = T, sep = "\t")
+# performing left join inorder to join sequences to the meta data
+merged_data <- merge(clean_data, hap_seq, by = 'Haplotype', all.x = TRUE)
+
+library(Biostrings)
+library(pegas)
+library(ggplot2)
+
+unique_episodes <- unique(merged_data$Episode)
+
+dna_list <- list()
+
+for (i in unique_episodes) {
+    # Subset the data for the current episode
+    episode_data <- merged_data[merged_data$Episode == i,]
+    
+    # Create a DNA object
+    dna <- DNAStringSet(episode_data$Sequence)
+    
+    # Convert DNAStringSet to DNAbin
+    dna_bin <- as.DNAbin(dna)
+    
+    # Calculate haplotype diversity
+    hap_diversity <- hap.div(dna_bin)
+    nuc_diversity <-nuc.div(dna_bin)
+    
+    # Store the DNA object and haplotype diversity in the list
+    dna_list[[i]] <- list(dna = dna_bin, hap_diversity = hap_diversity, nuc_diversity=nuc_diversity)
+}
+
+```
+
+#### Calculating wHaplotype diversity
+Dropping this from analysis, as I cannot correct for the missing parasitaemia data
+```{r results = FALSE}
+whap.div <- function(haplotypes, size) {
+  hap_count<-length(haplotypes)
+  freq_counts <- table(haplotypes)
+  freq_counts<-as.data.frame(freq_counts)
+  mis_hap<-(size-hap_count)#the number of children per infection
+  new_row <- data.frame(Var1="missing_hap", Freq=mis_hap)
+  colnames(new_row) <- colnames(freq_counts)
+  freq_counts <- rbind(freq_counts, new_row)
+  n<-sum(freq_counts$Freq)
+  wdiv<-1-sum((freq_counts$Freq/n)^2)
+  h<-n/(n-1)*wdiv
+   return(h)
+}
+
+unique_epis <- unique(clean_data$Episode)
+
+hap_list <- list()
+
+for (i in unique_epis) {
+    # Subset the data for the current episode
+    epis_data<- clean_data[clean_data$Episode == i,]
+    
+    # Calculate weighted haplotype diversity
+    whap_diversity <- whap.div(epis_data$Haplotype, 33)#33 is the number of children in the study
+    
+    # Store the DNA object and haplotype diversity in the list
+    hap_list[[i]] <- list(whap_diversity = whap_diversity)
+}
+
+#ploting Weighted_haplotype-diversity" 
+   
+hap_diversities <- sapply(hap_list, function(x) x$whap_diversity)
+episode_numbers <- 1:14
+hap_diversities_subset <- hap_diversities[1:14]
+data <- data.frame(Episode = episode_numbers, Haplotype_Diversity = hap_diversities_subset)
+data_w<-data.frame(Episode = episode_numbers, Haplotype_Diversity=t(data[2, -1]))
+rownames(data_w)=NULL
+names(data_w)[2] <- "whap_diversity"
+   whap_plot <-ggplot(data_w, aes(x = Episode, y = whap_diversity)) +
+    geom_line(size=1) +
+    scale_x_continuous(breaks = seq(0, 14, by = 2), limits = c(0, 14)) +
+    theme_classic(base_size = 15) +
+    theme(aspect.ratio=5/7)+theme(text = element_text(size = 20))+
+    labs(x = "Episode", y = "weihgted_Haplotype Diversity", 
+    title = "Weighted_Haplotype Diversity")
+   
+   whap_plot
+```
+#ploting "hap_diversity"
+#### Getting Nucleotide and haplotype diversity per infection episodes
+```{r results = FALSE}
+hap_diversities <- sapply(dna_list, function(x) x$hap_diversity)
+episode_numbers <- 1:14
+hap_diversities_subset <- hap_diversities[1:14]
+data <- data.frame(Episode = episode_numbers, Haplotype_Diversity = hap_diversities_subset)
+data1<-data.frame(Episode = episode_numbers, Haplotype_Diversity=t(data[2, -1]))
+rownames(data1)=NULL
+names(data1)[2] <- "hap_diversity"
+  hap_plot <- ggplot(data1, aes(x = Episode, y = hap_diversity)) +
+    geom_line(size = 1) +
+    
+    scale_x_continuous(breaks = seq(0, 14, by = 2), limits = c(0, 14)) +
+    theme_classic(base_size = 15) +
+    theme(aspect.ratio = 5/7) +
+    theme(text = element_text(size = 20)) +
+    labs(x = "Episode", y = "Haplotype Diversity", title = "Haplotype Diversity")
+
+
+#ploting Nuclotide_diversity"
+nuc_diversities <- sapply(dna_list, function(x) x$nuc_diversity)
+data_n <- data.frame(Episode = episode_numbers, Nucleotide_Diversity = nuc_diversities[1:14])
+data_n1<-data.frame(Episode = episode_numbers,  Nucleotide_Diversity=t(data_n[2, -1]))
+rownames(data_n1)=NULL
+names(data_n1)[2] <- "nuc_diversity"
+
+    nuc_div<-ggplot(data_n1, aes(x = Episode, y = nuc_diversity)) +
+    geom_line(size=1) +
+    scale_x_continuous(breaks = seq(0, 14, by = 2), limits = c(0, 14)) +
+    theme_classic(base_size = 15) +
+    theme(aspect.ratio=5/7)+theme(text = element_text(size = 20))+
+    labs(x = "Episode", y = "Nuclotide Diversity", 
+    title = "Nucleotide Diversity")
+    
+
+library(gridExtra)
+combined_plot <- grid.arrange(hap_plot, nuc_div, ncol = 2)
+print(combined_plot)
+pdf("figures/hap&nuc_divesity.pdf",  width = 10, height = 5, pointsize=16)
+combined_plot <- grid.arrange(hap_plot, nuc_div, ncol = 2)
+print(combined_plot)
+dev.off()
+
+#Eporting data for henry
+div_data<-cbind(data1,data_n1$nuc_diversity)
+names(div_data)[3] <- "nuc_diversity"
+
+
+write.csv(div_data, "data/diversity.csv", sep = "\t", quote=F)#Passing this to Henry
+
+diversity_plot <- ggplot(div_data, aes(x = Episode)) +
+    geom_line(aes(y = hap_diversity, color = "Haplotype Diversity")) +
+    geom_line(aes(y = nuc_diversity, color = "Nucleotide Diversity")) +
+    geom_line(aes(y = whap_diversity, color = "Weighted Haplotype Diversity")) +
+    labs(title = "Diversity Measures", x = "Episode", y = "Diversity") +
+    scale_color_manual(name = "Diversity Type",
+                       values = c("Haplotype Diversity" = "blue",
+                                  "Nucleotide Diversity" = "red",
+                                  "Weighted Haplotype Diversity" = "green")) +
+    theme_minimal()
+
+# Print the plot
+#print(diversity_plot)
+
+
+````
+## Infection diversity corelations
+
+Parasitaemia and infection diversity
+```{r results = FALSE}
+library(dplyr)
+
+#head(data_meta)
+par_dat<-data.frame(Episode=data_meta$Episode, Parasitemia=data_meta$Parasitemia)
+par_dat <- par_dat[!is.na(par_dat$Parasitemia), , drop = FALSE]
+merged_par_data <- merge(div_data, par_dat, by = 'Episode', all.x = TRUE)
+ar_data <- merged_par_data %>%
+  group_by(Episode) %>%
+  mutate(Parasitemia = mean(Parasitemia))
+merged_par_data <- distinct(merged_par_data)
+merged_par_data<-as.data.frame(merged_par_data)
+
+# Doing hapdiversity on left Y-axis and parasitaemia on Right Y-axis and X_axis will do episodes
+melted_data <- reshape2::melt(merged_par_data, id.vars = "Episode")
+# Calculate the slopes
+slope_data <- melted_data %>%
+    group_by(variable) %>%
+    do(slope = coef(lm(value ~ Episode, data = .))[2])
+
+# Merge the slopes back into the melted_data dataframe, needed for use in plotting
+melted_data <- merge(melted_data, slope_data, by = "variable")
+
+multi_panel_plot <- ggplot(melted_data, aes(x = Episode, y = value)) +
+    geom_line(size = 1) +
+    geom_smooth(method = "lm", se = FALSE, color = "black", linetype = "dotted") +
+    facet_wrap(~ variable, scales = "free_y", nrow = 3) +
+    geom_text(data = slope_data, aes(x = Inf, y = Inf, label = sprintf("%.4f     ", slope)),
+              hjust = 1, vjust = 1, size = 4, color = "black") +
+    scale_x_continuous(breaks = seq(0, max(melted_data$Episode), by = 2),
+                       limits = c(0, max(melted_data$Episode))) +
+    theme_classic(base_size = 15) +
+    theme(aspect.ratio = 5/7) +
+    theme(text = element_text(size = 20)) +
+    labs(x = "Episodes", y = "Value", title = "Trends Over Time")
+
+pdf("figures/divesity_parasitamia.pdf",  width = 10, height = 7, pointsize=16)
+multi_panel_plot
+dev.off()
+multi_panel_plot
+
+# Ploting hapdiversity and parasaeteamia in one plot two y-axes
+
+pdf("figures/hap_divesity_parasitamia.pdf", width = 7, height = 6, pointsize = 14)
+par(mar = c(5, 5, 4, 5), lwd = 2.5)
+
+# Plot Haplotype Diversity
+plot(merged_par_data$Episode, merged_par_data$hap_diversity, ylim = c(0, 1.5), type = "l", lwd = 3, col = "black", xlab = "Infection episodes", ylab = "Hap_Diversity", cex.axis = 1.5, cex.lab = 1.5)
+
+# Adding the second y-axis on the right side
+
+par(new = TRUE)
+plot(merged_par_data$Episode, merged_par_data$Parasitemia, ylim = c(0, 300000), type = "l", lty = 2, lwd = 3, col = "black", xlab = "", ylab = "", axes = FALSE)
+ # Add axis on the right side
+axis(side =4, cex.axis = 1.5)
+
+
+mtext("Parasitaemia", side = 4, line = 2, col = "black", cex.lab = 1.5,cex = 1.5,padj = 1.5)
+
+# Add a legend
+legend("bottomleft", legend = c("Hap_Diversity", "Parasitaemia"), lty = c(1, 2), lwd = c(3, 3), inset = c(-0.04, 0.03), xpd = TRUE, box.lty = 0, cex = 1)
+
+dev.off()
+
+
+pdf("figures/nuc_divesity_parasitamia.pdf", width = 7, height = 6, pointsize = 14)
+par(mar = c(5, 5, 4, 5), lwd = 2.5)
+
+# Plot Haplotype Diversity
+plot(merged_par_data$Episode, merged_par_data$nuc_diversity, type = "l", lwd = 3, col = "black", xlab = "Infection episodes", ylab = "nuc_Diversity", cex.axis = 1.5, cex.lab = 1.5)
+
+# Adding the second y-axis on the right side
+
+par(new = TRUE)
+plot(merged_par_data$Episode, merged_par_data$Parasitemia, ylim = c(0, 300000), type = "l", lty = 2, lwd = 3, col = "black", xlab = "", ylab = "", axes = FALSE)
+ # Add axis on the right side
+axis(side =4, cex.axis = 1.5)
+
+
+mtext("Parasitaemia", side = 4, line = 2, col = "black", cex.lab = 1.5,cex = 1.5,padj = 1.5)
+
+# Add a legend
+legend("topright", legend = c("nuc_Diversity", "Parasitaemia"), lty = c(1, 2), lwd = c(3, 3), inset = c(0.05, 0.03), xpd = TRUE, box.lty = 0, cex = 1)
+
+dev.off()
+
+
+
+#calculating correlations
+hap_div_cor <- cor(merged_par_data$nuc_diversity, merged_par_data$hap_diversity,method = "spearman")
+hap_cor <- cor(merged_par_data$hap_diversity, merged_par_data$Parasitemia,method = "spearman")
+nuc_cor <- cor(merged_par_data$nuc_diversity, merged_par_data$Parasitemia,method = "spearman")
+hap_cor
+nuc_cor# taken to the text
+````
+
+
+Figure available [hap diversity vs parasitaemia](https://mangiruben.github.io/pfMSP1-Malaria/figures/hap_divesity_parasitamia.pdf) [E-KSGN-L proportion](https://mangiruben.github.io/pfMSP1-Malaria/figures/nuc_divesity_parasitamia.pdf) and [Infection intervals in months](https://mangiruben.github.io/pfMSP1-Malaria/figures/figures/freq_infect_interval.pdf)
 <hr>
+
+
