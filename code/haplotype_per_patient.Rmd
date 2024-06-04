@@ -1,7 +1,7 @@
 ---
-title: "Haplotypes per patient"
+title: "Microhaplotypes per patient"
 author: "Reuben M. Yaa"
-date: "08/11/2022"
+date: "<h4>Updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
 output: html_document
 ---
 
@@ -14,15 +14,20 @@ knitr::opts_chunk$set(warning = FALSE)
 ```
 
 ## Introduction
-Assigned back the haplotypes respective patients irrespective of the infection episodes. This identifies the patients that were mostly infected and by which haplotype. 
+Assigned back the microhaplotypes respective patients irrespective of the infection episodes. This identifies the patients that were mostly infected and by which haplotype. 
 
-### Patients haplotypes distribution
+### Patients microhaplotypes distribution
 ```{r}
 library(plotly)
 library(dplyr)
 library(networkD3)
+library(ggplot2)
+
 hap<- readxl::read_xlsx("data/Haplotype assigned.xlsx", col_names = TRUE)
 hap <-as.data.frame(hap)
+
+geno<- readxl::read_xlsx("data/genotype+props.xlsx", col_names = TRUE)
+geno <-as.data.frame(geno)
 sankey <- function(data, var1, var2, count = "n"){
 ## Rename
   data$pre_group <- data[[var1]]
@@ -60,7 +65,7 @@ sankey <- function(data, var1, var2, count = "n"){
                            Value = 'value',
                            NodeID = 'name',
                            units="count",
-                           fontSize = 14,
+                           fontSize = 16,
                            nodePadding = 7,
                            nodeWidth = 20,
                            sinksRight = FALSE)
@@ -70,24 +75,61 @@ sankey<-sankey(hap, var1="Patient_ID", var2="Haplotype", count = "Frequency")
 sankey
 ```
 
-### E-KSNG-L haplotype proportion 
-Reviewed to include the proportion of the prevalent haplotype E-KSNG-L in relation to all the haplotypes per patient
+### prevalent microhaplotype proportion 
+Reviewed to include the proportion of the prevalent prevalent haplotype  in relation to all the microhaplotypes per patient
 ```{r}
 library(productplots)
-hap['Haplotype'][hap['Haplotype']!="E-KSNG-L"]<-"OTHER"
-props<-ggplot() + geom_bar(aes(x = Patient_ID, y = Frequency, fill = factor(Haplotype, levels=c("OTHER","E-KSNG-L"))), data = hap,position="fill", stat="identity")+
+library(ggplot2)
+#hap['Haplotype'][hap['Haplotype']!="E-KSNG-L"]<-"OTHER"
 
+
+hap$Haplotype[hap$Haplotype !="E-KSNG-L" &  hap$Haplotype != "Q-KSNG-L"  & hap$Haplotype != "Q-KSNG-F" & hap$Haplotype != "Q-KNNG-L"] <-"OTHER"
+
+order =c(23, 30,7,8,16,19,20,29,1,2,10,14,21,27,28,9,11,13,18,26,3,12,32,15,25,17,  24, 33,31,22)#from Hierachy of next figure
+                                     
+props<-ggplot() + 
+geom_bar(aes(x = factor(hap$Patient_ID, levels = order), y = Frequency, fill = factor(Haplotype, levels=c("OTHER","E-KSNG-L", "Q-KSNG-L", "Q-KSNG-F", "Q-KNNG-L"))), data = hap,position="fill", stat="identity")+
     ylab("Proportion")+coord_flip()+
     labs(fill="Haplotype")+
-    scale_x_continuous(breaks = seq(1, 33, by = 1))+ theme_classic() +
-    theme(axis.line.y = element_blank(), axis.line.x = element_line())
-    #geom_text(aes(label = Proportion, y = pos), size = 3))
+    theme_classic() +
+     #scale_x_continuous(breaks = seq(1, 33, by = 1))+
+      
+    theme(axis.line.y = element_blank(), axis.line.x = element_line(), text = element_text(size = 14), axis.text.x = element_text(size = 16))
+    
 
 ### Saving the plot
-props
-pdf("figures/props_distribution.pdf", width = 5, height = 7, pointsize = 16)#save as pdf file
+props 
+pdf("figures/props_distribution.pdf", width = 5, height = 8, pointsize = 16)#save as pdf file
 props
 dev.off()
+
+
+
+
+geno<- readxl::read_xlsx("data/genotype+props.xlsx", col_names = TRUE)
+geno <-as.data.frame(geno)
+
+#mean_SD is mean genotyped per individual+SD
+mean_SD <- c(mean(geno$Episodes[geno$state == "genotyped"]), sd(geno$Episodes[geno$state == "genotyped"]))
+
+
+#geno <- geno[order(-geno$diff),]
+
+p <- ggplot(geno, aes(y = reorder(Patient_ID, diff), x = diff)) +
+  geom_col(aes(fill = factor(state, levels=c("total_epis", "genotyped"))))+
+
+geom_text(aes(label = diff), size = 3, hjust = 1.5, position = "stack") +
+  
+  scale_x_continuous(breaks = seq(0, 30, by = 5))+ theme_classic() +
+    theme(axis.line.y = element_blank(), axis.line.x = element_line(), text = element_text(size = 14), axis.text.x = element_text(size = 16) )+
+stat_summary(fun.y = sum, aes(label = ..x..), geom = "text", hjust = -0.3, size = 0)+#changed size to 0, suggestions to remove the total(genotyped+non_genptyped)
+  scale_fill_manual(values=c('#DCDCDC','#B6B6B4' ))
+
+p + labs(fill = "state")
+pdf("figures/genotyped_distribution.pdf", width = 5, height = 8, pointsize = 16)
+p + labs(fill = "state")
+dev.off()
+
 ```
 
 
@@ -97,6 +139,100 @@ saveNetwork(sankey, "figures/haplotypes_assigned.html")
 png<-webshot::webshot("figures/haplotypes_assigned.html","figures/haplotypes per patient.pdf", vwidth = 1000, vheight = 900)
 unlink("figures/haplotypes_assigned*", recursive = TRUE)
 ```
-Figure available [haplotype per patient](https://mangiruben.github.io/pfMSP1-Malaria/figures/haplotypes per patient.pdf)
-and [E-KSGN-L proportion](https://mangiruben.github.io/pfMSP1-Malaria/figures/figures/props_distribution.pdf)
+
+
+### Patterns of consecutive infection
+
+```{r}
+sup<- readxl::read_xlsx("data/Supplementary Table 1.xlsx", col_names = TRUE)
+sup <-as.data.frame(sup)
+
+
+sup_filtered <- sup[sup$Patient_ID %in% unique(sup$Patient_ID[diff(sup$Episode) == 1]), ]
+
+#Now sup_filtered contains rows where episodes are consecutive per patient
+
+sup_filtered$Episode <- as.numeric(sup_filtered$Episode)
+
+
+# Function to filter consecutive episodes with the same haplotypes within a group
+consecutive_same_haplotypes_within_group <- function(patient_data) {
+  consecutive_rows <- patient_data$Episode == lag(patient_data$Episode) + 1 & 
+                       patient_data$Haplotype == lag(patient_data$Haplotype)
+  return(patient_data[consecutive_rows | lead(consecutive_rows), ])
+}
+
+
+consecutive_same_haplotypes_data <- sup_filtered %>%
+  group_by(Patient_ID) %>%
+  do(consecutive_same_haplotypes_within_group(.))
+
+# Ungroup the result
+consecutive_same_haplotypes_data <- ungroup(consecutive_same_haplotypes_data)
+consecutive_same_haplotypes_data <- consecutive_same_haplotypes_data %>%
+  filter(!is.na(Patient_ID))
+spp<- readxl::read_xlsx("data/hap.xlsx", col_names = TRUE)
+spp <-as.data.frame(spp)
+
+#state time between similar consecutive infections in months
+
+spp$Patient_ID <- factor(spp$Patient_ID, levels = unique(spp$Patient_ID))
+
+# ploting the density, but going to drop this
+ggplot(spp, aes(x = Episode, y = Patient_ID, fill = state)) +
+    geom_tile() +
+    scale_fill_gradient(low = "grey", high = "blue", limits = c(0, 17)) +
+    labs(title = "Density for similar consecutive infections",
+         x = "Episode",
+         y = "Patient_ID") +
+    theme_minimal()
+
+spp <- spp[spp$state != 0, ]
+spp<- readxl::read_xlsx("data/spp.xlsx", col_names = TRUE)
+spp<- spp[complete.cases(spp$state), ]
+i_order<-c("6_7", "3_4", "4_5", "6_7", "1_2", "22_24", "23_24", "17_18","2_3","9_10", "10_11", "9_10", "13_14" )
+i_order_unique <- unique(i_order)
+
+# Convert Episode to a factor with custom levels
+spp$Episode <- factor(spp$Episode, levels = i_order_unique)
+
+
+pdf("figures/infect_interval.pdf", width = 4, height = 4, pointsize = 18)
+ggplot(spp, aes(x = Episode, y = Patient_ID, fill = Haplotype, size = state)) +
+  geom_point(shape = 21) +
+  scale_size_continuous(range = c(1, 7), breaks = seq(1, 16, by = 4)) +
+  labs(title = "Consecutive infec intervals",
+       x = "Consecutive infections",
+       y = "Patient_ID") +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+    axis.ticks = element_line(color = "black"),  
+    panel.border = element_rect(color = "black", fill = NA),  
+    panel.grid.major = element_blank(),  
+    panel.grid.minor = element_blank(),  
+    axis.line = element_line(color = "black")  
+  )
+
+dev.off()
+```
+
+
+#### Distribution of interval of infection using histogram
+```{r}
+infe<- readxl::read_xlsx("data/MSP1_sample_data.xlsx", col_names = TRUE)
+infe <-as.data.frame(infe)
+infe <- infe[complete.cases(infe$interval_inf), ]
+
+
+inf<-hist(infe$interval_inf, breaks=30, main = "Distribution of interval of infections", xlab = "Infection interval in months", ylim = c(0,100))
+#inf
+pdf("figures/freq_infect_interval.pdf", width = 4, height = 6, pointsize = 16)
+hist(infe$interval_inf, breaks=30, main = "Distribution of interval of infections", xlab = "Infection interval in months", ylim = c(0,100))
+dev.off()
+
+```
+
+
+Figure available [haplotype per patient](https://mangiruben.github.io/pfMSP1-Malaria/figures/haplotypes per patient.pdf) [proportion_distributions](https://mangiruben.github.io/pfMSP1-Malaria/figures/figures/props_distribution.pdf) and [Infection intervals in months](https://mangiruben.github.io/pfMSP1-Malaria/figures/figures/freq_infect_interval.pdf)
 <hr>
