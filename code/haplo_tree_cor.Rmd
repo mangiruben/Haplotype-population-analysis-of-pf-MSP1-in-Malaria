@@ -278,7 +278,7 @@ diversity_plot <- ggplot(div_data, aes(x = Episode)) +
 #print(diversity_plot)
 
 
-````
+```
 ## Infection diversity corelations
 
 Parasitaemia and infection diversity
@@ -376,7 +376,7 @@ hap_cor <- cor(merged_par_data$hap_diversity, merged_par_data$Parasitemia,method
 nuc_cor <- cor(merged_par_data$nuc_diversity, merged_par_data$Parasitemia,method = "spearman")
 hap_cor
 nuc_cor# taken to the text
-````
+```
 
 
 Figure available [hap diversity vs parasitaemia](https://mangiruben.github.io/pfMSP1-Malaria/figures/hap_divesity_parasitamia.pdf) [E-KSGN-L proportion](https://mangiruben.github.io/pfMSP1-Malaria/figures/nuc_divesity_parasitamia.pdf) and [Infection intervals in months](https://mangiruben.github.io/pfMSP1-Malaria/figures/figures/freq_infect_interval.pdf)
